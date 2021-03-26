@@ -1,0 +1,119 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block  th:include="fragments/header" ></th:block>
+</head>
+<body>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+<!-- <div th:replace="fragments/header :: header"/> -->
+<script th:inline="javascript">
+    
+        var encryptedBase64Key = /*[[${key}]]*/ 'default';
+        var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
+        
+        console.log(decryptAccountNumber("xKI4SGXj3I6K1SIlb8L+QA=="));
+
+        function decryptAccountNumber(encryptedCipherText) {
+            var decryptedData = CryptoJS.AES.decrypt( encryptedCipherText, parsedBase64Key, {
+            mode: CryptoJS.mode.ECB,
+            padding: CryptoJS.pad.Pkcs7
+            } );
+        return decryptedData.toString( CryptoJS.enc.Utf8 );
+        }
+
+    </script>
+<!-- <script type="text/javascript">
+    console.log('crypto-js', CryptoJS);
+    
+    var parsedBase64Key = CryptoJS.enc.Base64.parse(encryptedBase64Key);
+    var encryptedData = null;
+    {
+    // Decryption process
+    var encryptedCipherText = ‘U2WvSc8oTur1KkrB6VGNDmA3XxJb9cC+T9RnqT4kD90=’ ; // or encryptedData;
+    var decryptedData = CryptoJS.AES.decrypt( encryptedCipherText, parsedBase64Key, {
+    mode: CryptoJS.mode.ECB,
+    padding: CryptoJS.pad.Pkcs7
+    } );
+    // console.log( “DecryptedData = “ + decryptedData );
+    
+    // this is the decrypted data as a string
+    var decryptedText = decryptedData.toString( CryptoJS.enc.Utf8 );
+    console.log( “DecryptedText = “ + decryptedText );
+    }
+    
+    </script> -->
+
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Admin page (Spring Security protected)</h1>
+
+        <form th:action="@{/dosearch}" method="get">
+            <div class="form-row">
+                <div class="col-md-6 form-group">
+                    <label>from date</label>
+                    <input type="date" th:name="fromdate" class="form-control">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>to date</label>
+                    <input type="date" th:name="todate" class="form-control" >
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>higher than</label>
+                    <input type="number"  step='any' placeholder='0.00' th:name="higher" class="form-control">
+                </div>
+                <div class="col-md-6 form-group">
+                    <label>less than</label>
+                    <input type="number"  step='any' placeholder='0.00' th:name="lower" class="form-control" >
+                </div>
+            </div>
+            <div class="col-submit">
+                <button class="submitbtn">Search</button>
+              </div>
+        </form>
+
+        <!-- /.panel-heading -->
+        <div class="panel-body">
+            <table dir="auto" width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                <thead>
+                    <tr>
+                        <th > ID</th>
+                        <th>account Id</th>
+                        <th>account Number</th>
+                        <th> date </th>
+                        <th> amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="gradeA" th:each="statement : ${statements}">
+                      <td type="hidden" th:text="${statement.id}"></td>
+                        <td th:text="${statement.accountId.id}"></td>
+                        <td th:text="|decryptAccountNumber('${statement.accountId.accountNumber}')|">
+                                <!-- <script type="text/javascript" th:inline="javascript">
+                                    decryptAccountNumber(/*[[${statement.accountId.accountNumber}]]*/ 'default');
+                                    </script> -->
+                        </td>
+                        <td th:text="${#calendars.format(statement.datefield, 'dd-MM-yyyy')}"></td>
+                        <td th:text="${new java.text.DecimalFormat('##0.0000000000000').format(statement.amount)}"></td>
+                        <!-- <td th:text="${statement.punit}"></td> -->
+                        </tr>
+                </tbody>
+            </table>
+            <!-- /.table-responsive -->
+        </div>
+        <!-- /.panel-body -->
+
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+
+    </div>
+
+</div>
+<!-- /.container -->
+
+<div th:replace="fragments/footer :: footer"/>
+
+</body>
+</html>

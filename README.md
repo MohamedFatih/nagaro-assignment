@@ -9,3 +9,6 @@ build jar
 ./mvnw package
 
 accountsdb.accdb database should be next to the jar file
+
+User1: Username: admin & Password: admin
+User2: Username: user & Password: user

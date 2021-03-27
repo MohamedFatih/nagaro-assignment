@@ -6,11 +6,13 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Crypt {
-
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 private static final String ALGO = "AES"; // Default uses ECB PKCS5Padding
 private static String secretKey = "mustbe16byteskey";
 public static String encodedBase64Key = Crypt.encodeKey(secretKey);
@@ -24,17 +26,17 @@ String encryptedValue = Base64.getEncoder().encodeToString(encVal);
 return encryptedValue;
 }
 
-public static String decrypt(String strToDecrypt, String secret) {
-try {
-Key key = generateKey(secret);
-Cipher cipher = Cipher.getInstance(ALGO);
-cipher.init(Cipher.DECRYPT_MODE, key);
-return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
-} catch (Exception e) {
-System.out.println("Error while decrypting: " + e.toString());
-}
-return null;
-}
+// public static String decrypt(String strToDecrypt, String secret) {
+// try {
+// Key key = generateKey(secret);
+// Cipher cipher = Cipher.getInstance(ALGO);
+// cipher.init(Cipher.DECRYPT_MODE, key);
+// return new String(cipher.doFinal(Base64.getDecoder().decode(strToDecrypt)));
+// } catch (Exception e) {
+// System.out.println("Error while decrypting: " + e.toString());
+// }
+// return null;
+// }
 
 private static Key generateKey(String secret) throws Exception {
 byte[] decoded = Base64.getDecoder().decode(secret.getBytes());
@@ -42,10 +44,10 @@ Key key = new SecretKeySpec(decoded, ALGO);
 return key;
 }
 
-public static String decodeKey(String str) {
-byte[] decoded = Base64.getDecoder().decode(str.getBytes());
-return new String(decoded);
-}
+// public static String decodeKey(String str) {
+// byte[] decoded = Base64.getDecoder().decode(str.getBytes());
+// return new String(decoded);
+// }
 
 public static String encodeKey(String str) {
 byte[] encoded = Base64.getEncoder().encode(str.getBytes());

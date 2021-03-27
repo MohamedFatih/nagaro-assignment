@@ -1,8 +1,5 @@
 package com.nagaro.engine.model.converters;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 

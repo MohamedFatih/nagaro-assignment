@@ -5,6 +5,7 @@
 </head>
 <body>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.9-1/crypto-js.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- <div th:replace="fragments/header :: header"/> -->
 <script th:inline="javascript">
     
@@ -46,25 +47,27 @@
 <div class="container">
 
     <div class="starter-template">
-        <h1>Admin page (Spring Security protected)</h1>
-
-        <form th:action="@{/dosearch}" method="get">
+        <h1>Statement Search</h1>
+        <p th:text="${filterobject?.fromdate !=null or filterobject?.todate !=null or filterobject?.higher !=null or filterobject?.lower !=null}"></p>
+        <p th:text="${#objects.nullSafe(filterobject, default)}"></p>
+        <!-- <form th:action="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? '/dosearch' : '/noparam'}" th:object="${filterobject}" method="post"> -->
+            <form th:action="@{'/dosearch'}" th:object="${filterobject}" method="post">
             <div class="form-row">
                 <div class="col-md-6 form-group">
                     <label>from date</label>
-                    <input type="date" th:name="fromdate" class="form-control">
+                    <input type="date" th:field="*{fromdate}"  class="form-control">
                 </div>
                 <div class="col-md-6 form-group">
                     <label>to date</label>
-                    <input type="date" th:name="todate" class="form-control" >
+                    <input type="date" th:field="*{todate}"  class="form-control" >
                 </div>
                 <div class="col-md-6 form-group">
                     <label>higher than</label>
-                    <input type="number"  step='any' placeholder='0.00' th:name="higher" class="form-control">
+                    <input type="number" th:field="*{higher}" step='any' placeholder='0.00'  class="form-control">
                 </div>
                 <div class="col-md-6 form-group">
                     <label>less than</label>
-                    <input type="number"  step='any' placeholder='0.00' th:name="lower" class="form-control" >
+                    <input type="number" th:field="*{lower}" step='any' placeholder='0.00'  class="form-control" >
                 </div>
             </div>
             <div class="col-submit">
@@ -88,7 +91,7 @@
                     <tr class="gradeA" th:each="statement : ${statements}">
                       <td type="hidden" th:text="${statement.id}"></td>
                         <td th:text="${statement.accountId.id}"></td>
-                        <td th:text="|decryptAccountNumber('${statement.accountId.accountNumber}')|">
+                        <td th:text="${'javascript:decryptAccountNumber(' + statement.accountId.accountNumber + ')'}">
                                 <!-- <script type="text/javascript" th:inline="javascript">
                                     decryptAccountNumber(/*[[${statement.accountId.accountNumber}]]*/ 'default');
                                     </script> -->

@@ -9,14 +9,24 @@ import java.util.stream.Collectors;
 import com.nagaro.engine.model.Statement;
 import com.nagaro.engine.repository.StatementRepository;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Service;
 
 @Service
 public class SearchService {
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
     @Autowired
     StatementRepository statementRepository;
+
+    @Secured("ROLE_ADMIN")
+    public List<Statement> adminSearch(Date from , Date to , Double higher, Double lower){
+        logger.info("Only Admins Can search with this method");
+        return search(from , to , higher, lower);
+    }
 
     public List<Statement> search(Date from , Date to , Double higher, Double lower){
 
@@ -30,6 +40,7 @@ public class SearchService {
     }
 
     private List<Predicate<Statement>> predicateBuilder(Date from , Date to , Double higher, Double lower) {
+        logger.info("Building Criteria Based on the user inputs");
         Predicate<Statement> pFrom = x -> x.getDatefield().after(from) ;
         Predicate<Statement> pTo = x -> x.getDatefield().before(to) ;
         Predicate<Statement> pHigher = x -> x.getAmount() >= higher ;

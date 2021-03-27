@@ -58,7 +58,7 @@ public class SearchService {
         if (predicates.isEmpty())
         {
             Date threeMonths = new Date();
-            threeMonths.setMonth(threeMonths.getMonth() -5);
+            threeMonths.setMonth(threeMonths.getMonth() -3);
             predicates.add(x -> x.getDatefield().after(threeMonths));
         }
 

@@ -54,15 +54,4 @@ public class FilterDto {
                 + "]";
     }
 
-    @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((fromdate == null) ? 0 : fromdate.hashCode());
-        result = prime * result + ((higher == null) ? 0 : higher.hashCode());
-        result = prime * result + ((lower == null) ? 0 : lower.hashCode());
-        result = prime * result + ((todate == null) ? 0 : todate.hashCode());
-        return result;
-    }
-
 }

@@ -6,13 +6,10 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 @Service
 public class Crypt {
-    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 private static final String ALGO = "AES"; // Default uses ECB PKCS5Padding
 private static String secretKey = "mustbe16byteskey";
 public static String encodedBase64Key = Crypt.encodeKey(secretKey);

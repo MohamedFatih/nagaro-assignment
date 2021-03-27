@@ -23,7 +23,7 @@ public class StatementController {
     SearchService searchService;
 
     @PostMapping("/dosearch")
-    public String dosearch(FilterDto filter,Model model) throws ParseException{
+    public String dosearch(FilterDto filter,Model model) {
         
         logger.info("retrieving statement with parameters: "+filter );
             model.addAttribute("key",Crypt.encodedBase64Key);

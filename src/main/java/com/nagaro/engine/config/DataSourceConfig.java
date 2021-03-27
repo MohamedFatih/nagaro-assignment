@@ -1,6 +1,9 @@
 package com.nagaro.engine.config;
 
 import com.mchange.v2.c3p0.ComboPooledDataSource;
+
+import java.beans.PropertyVetoException;
+
 import javax.sql.DataSource;
 
 import org.slf4j.Logger;
@@ -22,7 +25,7 @@ public class DataSourceConfig {
     Environment env;
 
     @Bean
-    public DataSource createDataSource() throws Exception {
+    public DataSource createDataSource() throws PropertyVetoException {
         logger.info("Connectin to Database");
         ComboPooledDataSource ds = new ComboPooledDataSource();
 
